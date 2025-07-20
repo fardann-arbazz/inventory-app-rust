@@ -20,7 +20,7 @@ pub enum MenuExitStatus {
 pub fn run(user_service: &mut UserService) -> Result<MenuExitStatus, Box<dyn std::error::Error>> {
     // Initialize serde file json
     let mut inventory = InventoryService::load_items_file();
-    let mut transaction = TransactionService::new();
+    let mut transaction = TransactionService::load_items_file();
 
     // Welcome and login
     print_welcome_message();
@@ -99,7 +99,7 @@ fn run_main_menu(
 
 /// Menampilkan menu yang sesuai berdasarkan peran pengguna
 fn display_menu(user: &User) {
-    print!("\x1B[2J\x1B[1;1H"); // Clear screen
+    print!("\x1B[2J\x1B[1;1H"); 
 
     // Header
     println!("\n\x1B[1;34m╔════════════════════════════════════════════╗");
@@ -339,7 +339,7 @@ fn handle_menu_choice(
             Ok(None)
         }
 
-        "L" => {
+        "L" | "l" => {
             println!("🔒 Memproses logout...");
             match users_handlers::handle_logout(users_service) {
                 Ok(status) => Ok(Some(status)),

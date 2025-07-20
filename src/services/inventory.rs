@@ -2,7 +2,7 @@ use std::usize;
 
 use crate::errors::inventory_error::InventoryError;
 use crate::models::items::Items;
-use crate::utils::serde_file_inventory;
+use crate::storage::serde_file_inventory;
 
 pub struct InventoryService {
     pub items: Vec<Items>,

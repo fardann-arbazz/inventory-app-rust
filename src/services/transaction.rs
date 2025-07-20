@@ -1,6 +1,6 @@
 use chrono::NaiveDate;
 
-use crate::models::transaction::Transaction;
+use crate::{models::transaction::Transaction, storage::serde_file_transaction};
 
 pub struct TransactionService {
     pub records: Vec<Transaction>,
@@ -8,10 +8,20 @@ pub struct TransactionService {
 }
 
 impl TransactionService {
-    pub fn new() -> Self {
-        Self {
-            records: Vec::new(),
-            next_id: 1,
+    // function untuk menampilkan transaksi serde file
+    pub fn load_items_file() -> Self {
+        if let Ok(transactions) = serde_file_transaction::load_items() {
+            let next_id = transactions.last().map_or(1, |tx| tx.id + 1);
+
+            Self {
+                records: transactions,
+                next_id,
+            }
+        } else {
+            Self {
+                records: Vec::new(),
+                next_id: 1,
+            }
         }
     }
 

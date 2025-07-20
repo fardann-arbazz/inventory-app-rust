@@ -1,6 +1,7 @@
 use chrono::{Local, NaiveDateTime};
+use serde::{Deserialize, Serialize};
 
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Clone, PartialEq, Serialize, Deserialize)]
 pub struct Transaction {
     pub id: u32,
     pub item_id: u32,

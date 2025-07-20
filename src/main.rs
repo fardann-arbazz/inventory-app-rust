@@ -3,6 +3,7 @@ mod handlers;
 mod menu;
 mod models;
 mod services;
+mod storage;
 mod utils;
 
 use crate::menu::{MenuExitStatus, run};

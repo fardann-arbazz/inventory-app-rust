@@ -5,6 +5,7 @@ use crate::{
     handlers::inventory_handlers,
     models::transaction::Transaction,
     services::{inventory::InventoryService, transaction::TransactionService, users::UserService},
+    storage::serde_file_transaction,
     utils::{audit_logs, input_transaction},
 };
 
@@ -68,6 +69,9 @@ pub fn make_transaction(
     } else {
         println!("Tidak ada user yang login.");
     }
+
+    // Tambahkan transaksi ke dalam serde file
+    let _ = serde_file_transaction::save_items(&vec![transaction.clone()]);
 
     service.records.push(transaction);
     service.next_id += 1;
