@@ -57,20 +57,21 @@ OPERASI UTAMA:
   3. Laporan Penjualan
   4. Cari Transaksi Berdasarkan Tanggal
   5. Lihat Inventori
+  6. Lihat Laporan Transaksi (Barang Terlaris)
 
 MANAJEMEN INVENTORI:
-  6. Tambah Barang
-  7. Hapus Barang
-  8. Update Barang
-  9. Update Stok
-  10. Cari Barang
+  7. Tambah Barang
+  8. Hapus Barang
+  9. Update Barang
+  10. Update Stok
+  11. Cari Barang
 
 MANAJEMEN PENGGUNA:
-  11. Daftar Pengguna
-  12. Tambah Pengguna
-  13. Hapus Pengguna
-  14. Update Pengguna
-  15. Lihat Logs
+  12. Daftar Pengguna
+  13. Tambah Pengguna
+  14. Hapus Pengguna
+  15. Update Pengguna
+  16. Lihat Logs
 
 AKSI SISTEM:
   L. Logout
@@ -80,10 +81,8 @@ AKSI SISTEM:
 ### Contoh Laporan
 ```text
 === LAPORAN PENJUALAN HARI INI ===
-Total Transaksi : 12
+Total Transaksi: 12
 Total Pendapatan : Rp. 1.240.500
-Barang Terjual   : 47 unit
-Barang Terlaris  : Notebook (15 unit)
 ```
 
 ## 📂 Struktur Data
@@ -92,12 +91,11 @@ Barang Terlaris  : Notebook (15 unit)
 ```json
 [
   {
-    "id": "ITEM-001",
+    "id": "1",
     "nama": "Notebook Premium",
-    "kategori": "Alat Tulis",
-    "stok": 45,
+    "stock": 45,
     "harga": 12500.0,
-    "terakhir_update": "2025-07-20T09:30:00Z"
+    "timestamp": "2025-07-20T09:30:00Z"
   }
 ]
 ```
@@ -115,7 +113,6 @@ Barang Terlaris  : Notebook (15 unit)
 - [ ] Keranjang belanja (transaksi multi-barang)
 - [ ] Cetak struk transaksi
 - [ ] Ekspor laporan ke CSV
-- [ ] Pelacakan barang terlaris
 - [ ] Kategori inventori
 - [ ] Fungsi undo transaksi
 

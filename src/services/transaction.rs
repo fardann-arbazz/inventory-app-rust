@@ -1,3 +1,5 @@
+use std::collections::HashMap;
+
 use chrono::NaiveDate;
 
 use crate::{models::transaction::Transaction, storage::serde_file_transaction};
@@ -37,6 +39,22 @@ impl TransactionService {
                 }
             })
             .collect()
+    }
+
+    // function untuk menampilkan transaksi berdasarkan barang terlaris
+    pub fn view_top_selling_items(&self) -> Vec<(String, u32)> {
+        let mut item_counts: HashMap<String, u32> = HashMap::new();
+
+        for tx in &self.records {
+            let count = item_counts.entry(tx.item_name.clone()).or_insert(0);
+            *count += tx.quantity;
+        }
+
+        let mut items: Vec<(String, u32)> = item_counts.into_iter().collect();
+
+        items.sort_by(|a, b| b.1.cmp(&a.1));
+
+        items
     }
 
     // function untuk menghitung total harga

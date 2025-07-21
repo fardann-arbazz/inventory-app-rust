@@ -7,8 +7,8 @@ use crate::{
     utils::audit_logs,
 };
 
-const TOTAL_MENU_ADMIN: u32 = 15;
-const TOTAL_MENU_KASIR: u32 = 6;
+const TOTAL_MENU_ADMIN: u32 = 16;
+const TOTAL_MENU_KASIR: u32 = 7;
 
 #[allow(dead_code)]
 pub enum MenuExitStatus {
@@ -99,7 +99,7 @@ fn run_main_menu(
 
 /// Menampilkan menu yang sesuai berdasarkan peran pengguna
 fn display_menu(user: &User) {
-    print!("\x1B[2J\x1B[1;1H"); 
+    print!("\x1B[2J\x1B[1;1H");
 
     // Header
     println!("\n\x1B[1;34m╔════════════════════════════════════════════╗");
@@ -115,23 +115,24 @@ fn display_menu(user: &User) {
     println!("  \x1B[32m3.\x1B[0m Laporan Transaksi");
     println!("  \x1B[32m4.\x1B[0m Cari Transaksi (Tanggal)");
     println!("  \x1B[32m5.\x1B[0m Lihat Stok Barang");
+    println!("  \x1B[32m6.\x1B[0m Lihat Laporan Transaksi (Barang Terlaris)");
 
     if is_admin(user) {
         // INVENTORY MANAGEMENT (Admin only)
         println!("\n\x1B[1;36mINVENTORY MANAGEMENT:\x1B[0m");
-        println!("  \x1B[33m6.\x1B[0m Tambah Barang");
-        println!("  \x1B[33m7.\x1B[0m Hapus Barang");
-        println!("  \x1B[33m8.\x1B[0m Update Barang");
-        println!("  \x1B[33m9.\x1B[0m Update Stok");
-        println!("  \x1B[33m10.\x1B[0m Cari Barang");
+        println!("  \x1B[33m7.\x1B[0m Tambah Barang");
+        println!("  \x1B[33m8.\x1B[0m Hapus Barang");
+        println!("  \x1B[33m9.\x1B[0m Update Barang");
+        println!("  \x1B[33m10.\x1B[0m Update Stok");
+        println!("  \x1B[33m11.\x1B[0m Cari Barang");
 
         // USER MANAGEMENT (Admin only)
         println!("\n\x1B[1;36mUSER MANAGEMENT:\x1B[0m");
-        println!("  \x1B[35m11.\x1B[0m Lihat User");
-        println!("  \x1B[35m12.\x1B[0m Tambah User");
-        println!("  \x1B[35m13.\x1B[0m Hapus User");
-        println!("  \x1B[35m14.\x1B[0m Update User");
-        println!("  \x1B[35m15.\x1B[0m Audit Logs");
+        println!("  \x1B[35m12.\x1B[0m Lihat User");
+        println!("  \x1B[35m13.\x1B[0m Tambah User");
+        println!("  \x1B[35m14.\x1B[0m Hapus User");
+        println!("  \x1B[35m15.\x1B[0m Update User");
+        println!("  \x1B[35m16.\x1B[0m Audit Logs");
     }
 
     // SYSTEM ACTIONS (for all users)
@@ -143,9 +144,9 @@ fn display_menu(user: &User) {
     print!(
         "\n\x1B[1mPilih menu [{}]: \x1B[0m",
         if is_admin(user) {
-            "1-15, L, 0"
+            "1-16, L, 0"
         } else {
-            "1-5, L, 0"
+            "1-6, L, 0"
         }
     );
     let _ = std::io::stdout().flush();
@@ -226,9 +227,14 @@ fn handle_menu_choice(
             inventory_handlers::view_items(inventory);
             Ok(None)
         }
+        "6" => {
+            println!("📊 Menampilkan transaksi berdasarkan barang terlaris...\n");
+            transaction_handlers::view_top_selling_item(transaction);
+            Ok(None)
+        }
 
         // Admin only
-        "6" if is_admin(user) => {
+        "7" if is_admin(user) => {
             println!("➕ Menambah barang baru...\n");
             match inventory_handlers::add_items(inventory) {
                 Ok(_) => {
@@ -240,7 +246,7 @@ fn handle_menu_choice(
             }
             Ok(None)
         }
-        "7" if is_admin(user) => {
+        "8" if is_admin(user) => {
             println!("🗑️ Menghapus barang...\n");
             match inventory_handlers::handle_delete_barang(inventory) {
                 Ok(_) => {
@@ -252,7 +258,7 @@ fn handle_menu_choice(
             }
             Ok(None)
         }
-        "8" if is_admin(user) => {
+        "9" if is_admin(user) => {
             println!("✏️ Mengupdate barang...\n");
             match inventory_handlers::handle_update_barang(inventory) {
                 Ok(_) => {
@@ -264,7 +270,7 @@ fn handle_menu_choice(
             }
             Ok(None)
         }
-        "9" if is_admin(user) => {
+        "10" if is_admin(user) => {
             println!("📊 Mengupdate stok barang...\n");
             match inventory_handlers::handle_update_stock(inventory) {
                 Ok(_) => {
@@ -276,7 +282,7 @@ fn handle_menu_choice(
             }
             Ok(None)
         }
-        "10" if is_admin(user) => {
+        "11" if is_admin(user) => {
             println!("🔍 Mencari barang...\n");
             match inventory_handlers::handle_search_barang(inventory) {
                 Ok(_) => {
@@ -288,13 +294,13 @@ fn handle_menu_choice(
             }
             Ok(None)
         }
-        "11" if is_admin(user) => {
+        "12" if is_admin(user) => {
             println!("📋 Menampilkan Users...\n");
             users_handlers::handle_users_list(users_service);
             Ok(None)
         }
 
-        "12" if is_admin(user) => {
+        "13" if is_admin(user) => {
             println!("➕ Menambah users baru...\n");
             match users_handlers::handle_users(users_service) {
                 Ok(_) => {
@@ -307,7 +313,7 @@ fn handle_menu_choice(
             Ok(None)
         }
 
-        "13" if is_admin(user) => {
+        "14" if is_admin(user) => {
             println!("➖ Hapus users baru...\n");
             match users_handlers::handle_delete_users(users_service) {
                 Ok(_) => {
@@ -320,7 +326,7 @@ fn handle_menu_choice(
             Ok(None)
         }
 
-        "14" if is_admin(user) => {
+        "15" if is_admin(user) => {
             println!("✏️ Update users baru...\n");
             match users_handlers::handle_update_users(users_service) {
                 Ok(_) => {
@@ -333,7 +339,7 @@ fn handle_menu_choice(
             Ok(None)
         }
 
-        "15" if is_admin(user) => {
+        "16" if is_admin(user) => {
             println!("📝 Menampilkan logs...\n");
             audit_logs::show_audit_logs();
             Ok(None)

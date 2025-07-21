@@ -100,6 +100,24 @@ pub fn view_records(service: &TransactionService) {
     }
 }
 
+// function untuk handle menampilkan transaksi berdasarkan barang terlaris
+pub fn view_top_selling_item(service: &TransactionService) {
+    println!("=========================");
+    println!("\n== Barang Terlaris ==");
+    println!("=========================");
+
+    let items_transaction = service.view_top_selling_items();
+
+    if items_transaction.is_empty() {
+        println!("Tidak ada barang terlaris.");
+        return;
+    }
+
+    for (item_name, count) in items_transaction {
+        println!("{}: {} item", item_name, count);
+    }
+}
+
 // function untuk menampilkan total transaksi hari ini
 pub fn view_total_transaction(service: &TransactionService) {
     let today = Local::now().date_naive();
