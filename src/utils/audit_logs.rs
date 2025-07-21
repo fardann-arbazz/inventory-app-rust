@@ -26,4 +26,8 @@ pub fn show_audit_logs() {
         Ok(logs) => println!("{}", logs),
         Err(_) => println!("Tidak ada log yang ditemukan."),
     }
+
+    println!("\nTekan Enter untuk kembali...");
+    let mut pause = String::new();
+    std::io::stdin().read_line(&mut pause).unwrap();
 }
